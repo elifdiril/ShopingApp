@@ -6,27 +6,26 @@ export default class FormPart extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            data: [
+            data:
                 { urunAdi: '', urunKodu: '', urunMik: 0, urunBirim: 0, tutar: 0 }
-            ]
         }
+
+        this.inputChangeHandler = this.inputChangeHandler.bind(this);
+        this.formHandler = this.formHandler.bind(this);
     }
 
     inputChangeHandler(e) {
-        let _this = this;
-        let formFields = { ...this.state.data };
+        let formFields = JSON.parse(JSON.stringify(this.state.data));
         formFields[e.target.name] = e.target.value;
         console.log(e.target.value);
+        formFields.tutar= this.state.data.urunBirim * this.state.data.urunMik;
         this.setState({
-            formFields
+            data: formFields
         });
-        console.log('ad ' + _this.state.data.urunAdi);
     }
 
     formHandler() {
-        let _this = this;
-        console.log('ad ' + _this.state.data.urunAdi);
-        console.log('birim ' + _this.state.data.urunBirim);
+        
     }
 
     render() {
@@ -38,29 +37,29 @@ export default class FormPart extends React.Component {
                         <Row>
                             <Col>
                                 <Label>Ürün Adı</Label>
-                                <Input type="text" name="urunAdi" id="urunAdi" onChange={this.inputChangeHandler.bind(this)} />
+                                <Input type="text" name="urunAdi" id="urunAdi" onChange={this.inputChangeHandler} value={this.state.data.urunAdi} />
                             </Col>
                             <Col>
                                 <Label>Ürün Kodu</Label>
-                                <Input type="text" name="urunKodu" id="urunKodu" onChange={this.inputChangeHandler.bind(this)} />
+                                <Input type="text" name="urunKodu" id="urunKodu" onChange={this.inputChangeHandler} value={this.state.data.urunKodu} />
                             </Col>
                         </Row>
                         <Row>
                             <Col>
                                 <Label>Ürün Miktarı</Label>
-                                <Input type="text" name="urunMik" id="urunMik" onChange={this.inputChangeHandler.bind(this)} />
+                                <Input type="number" name="urunMik" id="urunMik" onChange={this.inputChangeHandler} value={this.state.data.urunMik} />
                             </Col>
                             <Col>
                                 <Label>Ürün Birim Fiyatı</Label>
-                                <Input type="text" name="urunBirim" id="urunBirim" onChange={this.inputChangeHandler.bind(this)} />
+                                <Input type="number" name="urunBirim" id="urunBirim" onChange={this.inputChangeHandler} value={this.state.data.urunBirim} />
                             </Col>
                             <Col>
                                 <Label>Ürün Tutarı</Label>
-                                <ListGroupItem style={{ height: 38 }}>{}</ListGroupItem>
+                                <ListGroupItem style={{ height: 38 }}>{this.state.data.tutar}</ListGroupItem>
                             </Col>
                         </Row>
                     </FormGroup>
-                    <Button onClick={this.formHandler.bind(this)} className="EkleButton">Ürün Ekle</Button>
+                    <Button onClick={this.formHandler} className="EkleButton">Ürün Ekle</Button>
                 </Form>
             </Card>
         );

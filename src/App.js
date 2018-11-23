@@ -5,7 +5,7 @@ import Form from './Form';
 import ShopingList from './ShopingList';
 
 class App extends Component {
-  
+
   constructor(props) {
     super(props);
     this.state = {
@@ -34,7 +34,6 @@ class App extends Component {
   }
 
   render() {
-    //let _this = this;
     return (
       <div className="App">
         <Container>
