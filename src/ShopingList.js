@@ -3,6 +3,10 @@ import { Card, Form, FormGroup, Table } from 'reactstrap';
 
 export default class ShopList extends React.Component {
 
+  editHandle(){
+    //edit
+  }
+
   render() {
     const { urunList, title } = this.props;
 
@@ -28,7 +32,8 @@ export default class ShopList extends React.Component {
                         <tr>
                           <td>{item.urunAdi}</td>
                           <td>{item.urunKodu}</td>
-                          <td>{item.urunMiktari * item.urunBirimFiyati}</td>
+                          <td>{item.tutar}</td>
+                          <td><button onClick={this.editHandle.bind(this)}>Düzenle</button></td>
                         </tr>
                       );
                     })
