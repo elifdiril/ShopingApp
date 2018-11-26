@@ -11,35 +11,68 @@ class App extends Component {
     this.state = {
       items: [
         {
+          id: "1",
           urunAdi: "sony",
           urunKodu: "tv",
           urunMik: 10,
           urunBirim: 5,
-          tutar:50
+          tutar: 50
         },
         {
+          id: "2",
           urunAdi: "lg",
           urunKodu: "buzdolabi",
           urunMik: 10,
           urunBirim: 10,
-          tutar:100
+          tutar: 100
         }
       ],
-      formValues: []
+      newFormValues: {
+        urunAdi: "",
+        urunKodu: "",
+        urunMik: 0,
+        urunBirim: 0,
+        tutar: 0
+      }
     }
     this.formHandler = this.formHandler.bind(this);
+    this.deleteHandle = this.deleteHandle.bind(this);
+    this.selectHandle = this.selectHandle.bind(this);
+  }
 
+  selectHandle(urunKodu) {
+    const index = this.state.items.findIndex(x => x.urunKodu === urunKodu);
+    if (index !== -1) {
+      const newItem = {};
+
+      const currItem = this.state.items[index];
+
+      newItem.id = currItem.id;
+      newItem.urunAdi = currItem.urunAdi;
+      newItem.urunKodu = currItem.urunKodu;
+      newItem.urunMik = currItem.urunMik;
+      newItem.urunBirim = currItem.urunBirim;
+      newItem.tutar = currItem.tutar;
+      this.setState({ newFormValues: newItem });
+    }
+  }
+
+  
+
+  deleteHandle(urunKodu) {
+    const index = this.state.items.findIndex(x => x.urunKodu === urunKodu);
+    if (index !== -1) {
+      const newArray = JSON.parse(JSON.stringify(this.state.items));
+      newArray.splice(index, 1);
+      this.setState({ items: newArray });
+    }
   }
 
   formHandler(dataFromForm) {
-
-    this.setState({
-      formValues: dataFromForm
-    });
-
-    this.state.items.push(this.state.formValues);
+    const newItems = JSON.parse(JSON.stringify(this.state.items));
+    newItems.push(dataFromForm);
+    this.setState({ items: newItems });
   }
-
 
   render() {
     return (
@@ -47,10 +80,14 @@ class App extends Component {
         <Container>
           <Row>
             <Col xs="6">
-              <Form action={this.formHandler} />
+              <Form action={this.formHandler}
+                newFormValues={this.state.newFormValues} />
             </Col>
             <Col xs="6">
-              <ShopingList title="Sepetteki Ürünler" urunList={this.state.items} />
+              <ShopingList //title="Sepetteki Ürünler"
+                urunList={this.state.items}
+                deleteHandle={this.deleteHandle}
+                selectHandle={this.selectHandle} />
             </Col>
           </Row>
         </Container>

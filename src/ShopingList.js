@@ -1,11 +1,7 @@
-import React from 'react';
-import { Card, Form, FormGroup, Table } from 'reactstrap';
+import React, { Component } from 'react';
+import { Card, Form, FormGroup, Button } from 'reactstrap';
 
-export default class ShopList extends React.Component {
-
-  editHandle(){
-    //edit
-  }
+export default class ShopList extends Component {
 
   render() {
     const { urunList, title } = this.props;
@@ -13,7 +9,7 @@ export default class ShopList extends React.Component {
     if (urunList)
       return (
         <Card className="FormFrame">
-          <h1>{title}</h1>
+
           <Form>
             <FormGroup>
               <text className="title" for="exampleText">Alışveriş Listesi</text>
@@ -27,13 +23,14 @@ export default class ShopList extends React.Component {
                 </thead>
                 <tbody>
                   {
-                    urunList.map(item => {
+                    urunList.map((item, index) => {
                       return (
                         <tr>
                           <td>{item.urunAdi}</td>
                           <td>{item.urunKodu}</td>
                           <td>{item.tutar}</td>
-                          <td><button onClick={this.editHandle.bind(this)}>Düzenle</button></td>
+                          <td><Button color="warning" onClick={() => this.props.selectHandle(item.urunKodu)}>Seç</Button></td>
+                          <td><Button color="danger" onClick={() => this.props.deleteHandle(item.urunKodu)}>Sil</Button></td>
                         </tr>
                       );
                     })
