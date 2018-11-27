@@ -28,6 +28,7 @@ class App extends Component {
         }
       ],
       newFormValues: {
+        urunId: 0,
         urunAdi: "",
         urunKodu: "",
         urunMik: 0,
@@ -39,6 +40,7 @@ class App extends Component {
     this.deleteHandle = this.deleteHandle.bind(this);
     this.selectHandle = this.selectHandle.bind(this);
     this.backHandle = this.backHandle.bind(this);
+    this.editHandler = this.editHandler.bind(this);
   }
 
   selectHandle(urunKodu) {
@@ -73,9 +75,20 @@ class App extends Component {
     this.setState({ items: newItems });
   }
 
+  editHandler(editData){
+    const editIdIndex = this.state.items.findIndex(x => x.urunKodu === editData.urunKodu);
+    if(editIdIndex !== -1){
+      const editedArray = JSON.parse(JSON.stringify(this.state.items));
+      editedArray.splice(editIdIndex, 1, editData);
+      this.setState({ items: editedArray });
+    }
+    this.backHandle();
+  }
+
   backHandle() {
     this.setState({
       newFormValues: {
+        urunId: 0,
         urunAdi: "",
         urunKodu: "",
         urunMik: 0,
@@ -92,6 +105,7 @@ class App extends Component {
           <Row>
             <Col xs="6">
               <UrunForm action={this.formHandler}
+                editHandler = {this.editHandler}
                 backHandle={this.backHandle}
                 newFormValues={this.state.newFormValues}
                 isEdit={!!(this.state.newFormValues && this.state.newFormValues.id)} />

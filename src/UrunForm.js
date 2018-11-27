@@ -6,6 +6,7 @@ export default class UrunForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            urunId:props.urunId  || 0,
             urunAdi: props.urunAdi || '',
             urunKodu: props.urunKodu || '',
             urunMik: props.urunMik || 0,
@@ -16,6 +17,7 @@ export default class UrunForm extends Component {
         this.inputChangeHandler = this.inputChangeHandler.bind(this);
         this.onFormSubmit = this.onFormSubmit.bind(this);
         this.backHandle = this.backHandle.bind(this);
+        this.onEditSubmit= this.onEditSubmit.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -56,6 +58,7 @@ export default class UrunForm extends Component {
             return;
 
         let formValues = {
+            urunId: this.state.urunId,
             urunAdi: this.state.urunAdi,
             urunKodu: this.state.urunKodu,
             urunMik: this.state.urunMik,
@@ -64,6 +67,20 @@ export default class UrunForm extends Component {
         }
 
         this.props.action(formValues);
+    }
+
+    onEditSubmit(){
+        if (!this.state.urunAdi)
+            return;
+            let formValues = {
+                urunAdi: this.state.urunAdi,
+                urunKodu: this.state.urunKodu,
+                urunMik: this.state.urunMik,
+                urunBirim: this.state.urunBirim,
+                tutar: this.state.tutar,
+            }
+    
+            this.props.editHandler(formValues);
     }
 
     render() {
@@ -102,7 +119,8 @@ export default class UrunForm extends Component {
                         <FormButtons
                             isEdit={this.props.isEdit}
                             onFormSubmit={this.onFormSubmit}
-                            backHandle={this.backHandle} />
+                            backHandle={this.backHandle} 
+                            onEditSubmit={this.onEditSubmit}/>
                     </Form>
                 </Card>
             </div>
@@ -111,12 +129,12 @@ export default class UrunForm extends Component {
 }
 
 const FormButtons = (props) => {
-    const { isEdit = false, onFormSubmit, backHandle } = props;
+    const { isEdit = false, onFormSubmit, backHandle, onEditSubmit } = props;
 
     if (isEdit) {
         return (
             <div>
-                <Button onClick={onFormSubmit} color="success" className="DüzenleButton"> Düzenle </Button>
+                <Button onClick={onEditSubmit} color="success" className="DüzenleButton"> Düzenle </Button>
                 <Button onClick={backHandle} color="danger" className="VazgecButton"> Vazgeç </Button>
             </div>);
     }
