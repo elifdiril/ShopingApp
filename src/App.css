@@ -9,10 +9,28 @@
     left: 75%;
 }
 
+.VazgecButton{
+  position:absolute;
+    transition: .5s ease;
+    top: 85%;
+    left: 60%;
+}
+
+.DüzenleButton{
+  position:absolute;
+    transition: .5s ease;
+    top: 85%;
+    left: 75%;
+}
+
 .title{
   margin: 0; 
 	padding: 2px 0;
   text-align:center;
   display:block;
   font-size: 40px;
+}
+
+.listItems:hover{
+  background-color: rgb(170, 169, 169);
 }

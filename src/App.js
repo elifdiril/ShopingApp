@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import { Container, Row, Col } from 'reactstrap';
-import Form from './Form';
+import UrunForm from './UrunForm';
 import ShopingList from './ShopingList';
 
 class App extends Component {
@@ -38,6 +38,7 @@ class App extends Component {
     this.formHandler = this.formHandler.bind(this);
     this.deleteHandle = this.deleteHandle.bind(this);
     this.selectHandle = this.selectHandle.bind(this);
+    this.backHandle = this.backHandle.bind(this);
   }
 
   selectHandle(urunKodu) {
@@ -57,8 +58,6 @@ class App extends Component {
     }
   }
 
-  
-
   deleteHandle(urunKodu) {
     const index = this.state.items.findIndex(x => x.urunKodu === urunKodu);
     if (index !== -1) {
@@ -74,14 +73,28 @@ class App extends Component {
     this.setState({ items: newItems });
   }
 
+  backHandle() {
+    this.setState({
+      newFormValues: {
+        urunAdi: "",
+        urunKodu: "",
+        urunMik: 0,
+        urunBirim: 0,
+        tutar: 0
+      }
+    });
+  }
+
   render() {
     return (
       <div className="App">
         <Container>
           <Row>
             <Col xs="6">
-              <Form action={this.formHandler}
-                newFormValues={this.state.newFormValues} />
+              <UrunForm action={this.formHandler}
+                backHandle={this.backHandle}
+                newFormValues={this.state.newFormValues}
+                isEdit={!!(this.state.newFormValues && this.state.newFormValues.id)} />
             </Col>
             <Col xs="6">
               <ShopingList //title="Sepetteki Ürünler"

@@ -25,7 +25,7 @@ export default class ShopList extends Component {
                   {
                     urunList.map((item, index) => {
                       return (
-                        <tr>
+                        <tr className = "listItems">
                           <td>{item.urunAdi}</td>
                           <td>{item.urunKodu}</td>
                           <td>{item.tutar}</td>

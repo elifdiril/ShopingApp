@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Card, Form, FormGroup, Label, Input, Col, Row, ListGroupItem } from 'reactstrap';
 
-export default class FormPart extends Component {
+export default class UrunForm extends Component {
 
     constructor(props) {
         super(props);
@@ -10,30 +10,26 @@ export default class FormPart extends Component {
             urunKodu: props.urunKodu || '',
             urunMik: props.urunMik || 0,
             urunBirim: props.urunBirim || 0,
-            tutar: props.tutar || 0,
-            isEdit: 0
+            tutar: props.tutar || 0
         }
 
         this.inputChangeHandler = this.inputChangeHandler.bind(this);
         this.onFormSubmit = this.onFormSubmit.bind(this);
+        this.backHandle = this.backHandle.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log(this.props.newFormValues);
-        console.log(nextProps.newFormValues);
         if ((!this.props.newFormValues && nextProps.newFormValues)
             || (this.props.newFormValues && nextProps.newFormValues && this.props.newFormValues.id !== nextProps.newFormValues.id)) {
             this.setState({
-                isEdit: 1,
                 urunAdi: nextProps.newFormValues.urunAdi,
                 urunKodu: nextProps.newFormValues.urunKodu,
                 urunMik: nextProps.newFormValues.urunMik,
                 urunBirim: nextProps.newFormValues.urunBirim,
                 tutar: nextProps.newFormValues.tutar
             });
-            console.log("state change");
         }
-    }
+      }
 
     inputChangeHandler(e) {
         const fieldName = e.target.name;
@@ -51,6 +47,10 @@ export default class FormPart extends Component {
         });
     }
 
+    backHandle() {
+        this.props.backHandle();
+    }
+
     onFormSubmit() {
         if (!this.state.urunAdi)
             return;
@@ -63,23 +63,11 @@ export default class FormPart extends Component {
             tutar: this.state.tutar,
         }
 
-        if (this.state.isEdit) {
-            formValues = {
-                urunAdi: this.props.newFormValues.urunAdi,
-                urunKodu: this.props.newFormValues.urunKodu,
-                urunMik: this.props.newFormValues.urunMik,
-                urunBirim: this.props.newFormValues.urunBirim,
-                tutar: this.props.newFormValues.tutar,
-            }
-            this.props.action(formValues);
-        }
-        this.setState({ isEdit: 0 });
-
-        console.log(formValues);
         this.props.action(formValues);
     }
 
     render() {
+
         return (
             <div>
                 <Card className="FormFrame">
@@ -111,10 +99,28 @@ export default class FormPart extends Component {
                                 </Col>
                             </Row>
                         </FormGroup>
-                        <Button onClick={this.onFormSubmit} color="success" className="EkleButton">Ürün Ekle</Button>
+                        <FormButtons
+                            isEdit={this.props.isEdit}
+                            onFormSubmit={this.onFormSubmit}
+                            backHandle={this.backHandle} />
                     </Form>
                 </Card>
             </div>
         );
     }
 }
+
+const FormButtons = (props) => {
+    const { isEdit = false, onFormSubmit, backHandle } = props;
+
+    if (isEdit) {
+        return (
+            <div>
+                <Button onClick={onFormSubmit} color="success" className="DüzenleButton"> Düzenle </Button>
+                <Button onClick={backHandle} color="danger" className="VazgecButton"> Vazgeç </Button>
+            </div>);
+    }
+    else {
+        return (<Button onClick={onFormSubmit} color="success" className="EkleButton">Ürün Ekle</Button>);
+    }
+};
