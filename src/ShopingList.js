@@ -4,7 +4,7 @@ import { Card, Form, FormGroup, Button } from 'reactstrap';
 export default class ShopList extends Component {
 
   render() {
-    const { urunList, title } = this.props;
+    const { urunList = [] } = this.props;
 
     if (urunList)
       return (
@@ -12,12 +12,12 @@ export default class ShopList extends Component {
 
           <Form>
             <FormGroup>
-              <text className="title" for="exampleText">Alışveriş Listesi</text>
-              <table style={{ border: "1px solid black;" }}>
+              <span className="title" >Alışveriş Listesi</span>
+              <table >
                 <thead>
                   <tr>
                     <th>urun adı</th>
-                    <th>urun kodu</th>
+                    <th>urun türü</th>
                     <th>urun tutarı</th>
                   </tr>
                 </thead>
@@ -25,9 +25,9 @@ export default class ShopList extends Component {
                   {
                     urunList.map((item, index) => {
                       return (
-                        <tr key={index} className = "listItems">
+                        <tr key={index} className="listItems">
                           <td>{item.urunAdi}</td>
-                          <td>{item.urunKodu}</td>
+                          <td>{item.urunTuru}</td>
                           <td>{item.tutar}</td>
                           <td><Button color="warning" onClick={() => this.props.selectHandle(item.urunKodu)}>Seç</Button></td>
                           <td><Button color="danger" onClick={() => this.props.deleteHandle(item.urunKodu)}>Sil</Button></td>

@@ -1,23 +1,32 @@
 import React, { Component } from 'react';
-import { Button, Card, Form, FormGroup, Label, Input, Col, Row, ListGroupItem } from 'reactstrap';
+import { Button, Card, Form, FormGroup, Label, Col, Row, ListGroupItem } from 'reactstrap';
+import DbsDropdown from './DbsDropDown';
+import DbsInput from './DbsInput';
+
+export const URUN_TYPES = {
+    BUZDOLABI: "buzdolabi",
+    TV: "tv"
+};
 
 export default class UrunForm extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            urunId:props.urunId  || 0,
+            urunTurleri: props.dropDownItems,
+            urunId: props.urunId || 0,
             urunAdi: props.urunAdi || '',
             urunKodu: props.urunKodu || '',
             urunMik: props.urunMik || 0,
             urunBirim: props.urunBirim || 0,
-            tutar: props.tutar || 0
+            tutar: props.tutar || 0,
+            urunTuru: null           
         }
 
         this.inputChangeHandler = this.inputChangeHandler.bind(this);
         this.onFormSubmit = this.onFormSubmit.bind(this);
         this.backHandle = this.backHandle.bind(this);
-        this.onEditSubmit= this.onEditSubmit.bind(this);
+        this.onEditSubmit = this.onEditSubmit.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -28,23 +37,21 @@ export default class UrunForm extends Component {
                 urunKodu: nextProps.newFormValues.urunKodu,
                 urunMik: nextProps.newFormValues.urunMik,
                 urunBirim: nextProps.newFormValues.urunBirim,
-                tutar: nextProps.newFormValues.tutar
+                tutar: nextProps.newFormValues.tutar,
+                urunTuru: nextProps.newFormValues.urunTuru
             });
         }
-      }
+    }
 
-    inputChangeHandler(e) {
-        const fieldName = e.target.name;
-        const fieldValue = e.target.value;
+    inputChangeHandler(field, value) {
         let tutar = this.state.tutar;
-
-        if (fieldName === "urunMik")
-            tutar = fieldValue * this.state.urunBirim;
-        else if (fieldName === "urunBirim")
-            tutar = fieldValue * this.state.urunMik;
+        if (field === "urunMik")
+            tutar = value * this.state.urunBirim;
+        else if (field === "urunBirim")
+            tutar = value * this.state.urunMik;
 
         this.setState({
-            [fieldName]: fieldValue,
+            [field]: value,
             tutar: tutar
         });
     }
@@ -64,63 +71,95 @@ export default class UrunForm extends Component {
             urunMik: this.state.urunMik,
             urunBirim: this.state.urunBirim,
             tutar: this.state.tutar,
+            urunTuru: this.state.urunTuru
         }
 
         this.props.action(formValues);
     }
 
-    onEditSubmit(){
+    onEditSubmit() {
         if (!this.state.urunAdi)
             return;
-            let formValues = {
-                urunAdi: this.state.urunAdi,
-                urunKodu: this.state.urunKodu,
-                urunMik: this.state.urunMik,
-                urunBirim: this.state.urunBirim,
-                tutar: this.state.tutar,
-            }
-    
-            this.props.editHandler(formValues);
+        let formValues = {
+            urunAdi: this.state.urunAdi,
+            urunKodu: this.state.urunKodu,
+            urunMik: this.state.urunMik,
+            urunBirim: this.state.urunBirim,
+            tutar: this.state.tutar,
+            urunTuru: this.state.urunTuru
+        }
+
+        this.props.editHandler(formValues);
     }
 
     render() {
-
         return (
             <div>
                 <Card className="FormFrame">
                     <Form>
-                        <text className="title">Form</text>
+                        <span className="title">Form</span>
                         <FormGroup>
                             <Row>
+
                                 <Col>
-                                    <Label>Ürün Adı</Label>
-                                    <Input type="text" name="urunAdi" id="urunAdi" onChange={this.inputChangeHandler} value={this.state.urunAdi} />
+                                    <DbsInput fieldName="urunAdi"
+                                        value={this.state.urunAdi}
+                                        onChange={this.inputChangeHandler}
+                                        label="Ürün Adı"
+                                        type="text" />
                                 </Col>
+
                                 <Col>
-                                    <Label>Ürün Kodu</Label>
-                                    <Input type="text" name="urunKodu" id="urunKodu" onChange={this.inputChangeHandler} value={this.state.urunKodu} />
+                                    <DbsInput fieldName="urunKodu"
+                                        value={this.state.urunKodu}
+                                        onChange={this.inputChangeHandler}
+                                        label="Ürün Kodu"
+                                        type="text" />
+                                </Col>
+                            </Row>
+                            <Row>
+
+                                <Col>
+                                    <DbsInput fieldName="urunMik"
+                                        value={this.state.urunMik}
+                                        onChange={this.inputChangeHandler}
+                                        label="Ürün Miktarı"
+                                        type="number" />
+                                </Col>
+
+                                <Col>
+                                    <DbsInput fieldName="urunBirim"
+                                        value={this.state.urunBirim}
+                                        onChange={this.inputChangeHandler}
+                                        label="Birim Fiyatı"
+                                        type="number" />
+                                </Col>
+
+                                <Col>
+                                    <Label>Ürün Tutarı</Label>
+                                    <ListGroupItem style={{ height: 38 }}>{this.state.tutar}</ListGroupItem>
                                 </Col>
                             </Row>
                             <Row>
                                 <Col>
-                                    <Label>Ürün Miktarı</Label>
-                                    <Input type="number" name="urunMik" id="urunMik" onChange={this.inputChangeHandler} value={this.state.urunMik} />
-                                </Col>
-                                <Col>
-                                    <Label>Ürün Birim Fiyatı</Label>
-                                    <Input type="number" name="urunBirim" id="urunBirim" onChange={this.inputChangeHandler} value={this.state.urunBirim} />
-                                </Col>
-                                <Col>
-                                    <Label>Ürün Tutarı</Label>
-                                    <ListGroupItem style={{ height: 38 }}>{this.state.tutar}</ListGroupItem>
+                                    <DbsDropdown
+                                        fieldName="urunTuru"
+                                        label="Ürün Türü"
+                                        urunTurleri={this.state.urunTurleri}
+                                        textField="ad"
+                                        value={this.state.urunTuru}
+                                        onChange={this.inputChangeHandler}
+                                        onSelect={this.inputChangeHandler}
+
+                                    />
                                 </Col>
                             </Row>
                         </FormGroup>
                         <FormButtons
                             isEdit={this.props.isEdit}
                             onFormSubmit={this.onFormSubmit}
-                            backHandle={this.backHandle} 
-                            onEditSubmit={this.onEditSubmit}/>
+                            backHandle={this.backHandle}
+                            onEditSubmit={this.onEditSubmit} />
                     </Form>
                 </Card>
             </div>
