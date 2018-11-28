@@ -2,6 +2,22 @@
   height: 500px;
 }
 
+.UrunFrame{
+  height: 500px;
+}
+
+.tableFrame{
+  margin: 0; 
+	padding: 12px 0;
+  text-align:center;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.buttonPick{
+  width: 80px;
+}
+
 .EkleButton{
   position:absolute;
     transition: .5s ease;
@@ -32,5 +48,6 @@
 }
 
 .listItems:hover{
+  width: 150;
   background-color: rgb(170, 169, 169);
 }

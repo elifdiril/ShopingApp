@@ -8,12 +8,12 @@ export default class ShopList extends Component {
 
     if (urunList)
       return (
-        <Card className="FormFrame">
+        <Card className="UrunFrame">
 
           <Form>
             <FormGroup>
               <span className="title" >Alışveriş Listesi</span>
-              <table >
+              <table className= "tableFrame" >
                 <thead>
                   <tr>
                     <th>urun adı</th>
@@ -29,8 +29,8 @@ export default class ShopList extends Component {
                           <td>{item.urunAdi}</td>
                           <td>{item.urunTuru}</td>
                           <td>{item.tutar}</td>
-                          <td><Button color="warning" onClick={() => this.props.selectHandle(item.urunKodu)}>Seç</Button></td>
-                          <td><Button color="danger" onClick={() => this.props.deleteHandle(item.urunKodu)}>Sil</Button></td>
+                          <td><Button className="buttonPick" color="warning" onClick={() => this.props.selectHandle(item.urunKodu)}>Seç</Button></td>
+                          <td><Button className="buttonPick" color="danger" onClick={() => this.props.deleteHandle(item.urunKodu)}>Sil</Button></td>
                         </tr>
                       );
                     })
