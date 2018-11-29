@@ -18,7 +18,7 @@ class App extends Component {
         urunMik: 0,
         urunBirim: 0,
         tutar: 0,
-        urunTuru:''
+        urunTuru: ''
       },
       dropDownItems: []
     }
@@ -31,20 +31,33 @@ class App extends Component {
 
 
   componentDidMount() {
-    Request.get('http://www.mocky.io/v2/5bfe3f5c3100000f002cfcb9')
+    Request.get('http://www.mocky.io/v2/5bffcd0f3200001000b2848f')
       .then(response => {
         if (response && response.body) {
-          this.setState({items: response.body.container.items});
+          let val = response.body.container.items;
+
+          for (let i = 0; i < val.length; i++) {
+            if (Object.keys(response.body.container.items[i])[6]) {
+              if (val[i].urunTuru === 1)
+                val[i].urunTuru = "buzdolabi"
+              else if (val[i].urunTuru === 2)
+                val[i].urunTuru = "tv"
+              else if (val[i].urunTuru === 3)
+                val[i].urunTuru = "fırın"
+              else if (val[i].urunTuru === 4)
+                val[i].urunTuru = "ütü"
+            }
+          }
+          this.setState({ items: val });
         }
       });
 
-      Request.get('http://www.mocky.io/v2/5bfd471731000056002cf837')
-          .then(response => {
-            if (response && response.body) {
-              this.setState({dropDownItems: response.body.container.urunType});
-              //console.log(this.state.dropDownItems);
-            }
-          });
+    Request.get('http://www.mocky.io/v2/5bffcd913200005200b28491')
+      .then(response => {
+        if (response && response.body) {
+          this.setState({ dropDownItems: response.body.container.urunType });
+        }
+      });
   }
 
   selectHandle(urunKodu) {
@@ -89,7 +102,7 @@ class App extends Component {
     }
     this.backHandle();
   }
-  
+
 
   backHandle() {
     this.setState({
@@ -100,7 +113,7 @@ class App extends Component {
         urunMik: 0,
         urunBirim: 0,
         tutar: 0,
-        urunTuru:''
+        urunTuru: null
       }
     });
   }
@@ -111,18 +124,18 @@ class App extends Component {
         <Container>
           <Row>
             <Col xs="6">
-            {this.state.dropDownItems.length > 0 &&
+              {this.state.dropDownItems.length > 0 &&
 
-              <UrunForm action={this.formHandler}
-                editHandler={this.editHandler}
-                backHandle={this.backHandle}
-                newFormValues={this.state.newFormValues}
-                isEdit={!!(this.state.newFormValues && this.state.newFormValues.id)} 
-                dropDownItems={this.state.dropDownItems}/>
-            }
+                <UrunForm action={this.formHandler}
+                  editHandler={this.editHandler}
+                  backHandle={this.backHandle}
+                  newFormValues={this.state.newFormValues}
+                  isEdit={!!(this.state.newFormValues && this.state.newFormValues.id)}
+                  dropDownItems={this.state.dropDownItems} />
+              }
             </Col>
             <Col xs="6">
-              <ShopingList 
+              <ShopingList
                 urunList={this.state.items}
                 deleteHandle={this.deleteHandle}
                 selectHandle={this.selectHandle} />

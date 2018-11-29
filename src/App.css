@@ -6,9 +6,11 @@
   height: 500px;
 }
 
+.formItems{
+  margin: 2%;
+}
+
 .tableFrame{
-  margin: 0; 
-	padding: 12px 0;
   text-align:center;
   border-collapse: collapse;
   width: 100%;

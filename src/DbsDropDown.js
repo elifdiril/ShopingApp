@@ -12,11 +12,11 @@ export default class DbsDropDown extends Component {
     }
 
     onChange(val) {
-        this.props.onChange(this.props.fieldName, val.ad);
+        this.props.onChange(this.props.fieldName, val.kod);
     }
 
     onSelect(val) {
-        this.props.onSelect(this.props.fieldName, val.ad);
+        this.props.onSelect(this.props.fieldName, val.kod);
     }
 
     render() {

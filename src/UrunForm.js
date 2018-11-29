@@ -5,7 +5,9 @@ import DbsInput from './DbsInput';
 
 export const URUN_TYPES = {
     BUZDOLABI: "buzdolabi",
-    TV: "tv"
+    TV: "tv",
+    FIRIN: "fırın",
+    UTU: "ütü"
 };
 
 export default class UrunForm extends Component {
@@ -20,7 +22,7 @@ export default class UrunForm extends Component {
             urunMik: props.urunMik || 0,
             urunBirim: props.urunBirim || 0,
             tutar: props.tutar || 0,
-            urunTuru: null           
+            urunTuru: ''
         }
 
         this.inputChangeHandler = this.inputChangeHandler.bind(this);
@@ -49,6 +51,17 @@ export default class UrunForm extends Component {
             tutar = value * this.state.urunBirim;
         else if (field === "urunBirim")
             tutar = value * this.state.urunMik;
+
+        if (field === "urunTuru") {
+            if (value === 1)
+                value = URUN_TYPES.BUZDOLABI
+            else if (value === 2)
+                value = URUN_TYPES.TV
+            else if (value === 3)
+                value = URUN_TYPES.FIRIN
+            else if (value === 4)
+                value = URUN_TYPES.UTU
+        }
 
         this.setState({
             [field]: value,
@@ -98,7 +111,7 @@ export default class UrunForm extends Component {
                 <Card className="FormFrame">
                     <Form>
                         <span className="title">Form</span>
-                        <FormGroup>
+                        <FormGroup className="formItems">
                             <Row>
 
                                 <Col>
